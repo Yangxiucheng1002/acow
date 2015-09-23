@@ -5,8 +5,8 @@
  *      Author: qiang.liu
  */
 
-#include <env.h>
-#include <Gradient.h>
+#include <ACEnv.h>
+#include <ACGradient.h>
 #include "ACException.h"
 //#include "opencv2/opencv.hpp"
 

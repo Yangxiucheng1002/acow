@@ -1,20 +1,20 @@
 /*
- * Camera.cpp
+ * Shadow.cpp
  *
  *  Created on: 2015年9月19日
  *      Author: qiang
  */
 
-#include "Camera.h"
+#include <ACShadow.h>
 
 namespace ac {
 
-Camera::Camera() {
+Shadow::Shadow() {
 	// TODO Auto-generated constructor stub
 
 }
 
-Camera::~Camera() {
+Shadow::~Shadow() {
 	// TODO Auto-generated destructor stub
 }
 

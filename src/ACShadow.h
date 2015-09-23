@@ -5,8 +5,8 @@
  *      Author: qiang
  */
 
-#ifndef SHADOW_H_
-#define SHADOW_H_
+#ifndef ACSHADOW_H_
+#define ACSHADOW_H_
 
 namespace ac {
 
@@ -18,4 +18,4 @@ public:
 
 } /* namespace my */
 
-#endif /* SHADOW_H_ */
+#endif /* ACSHADOW_H_ */

@@ -4,11 +4,10 @@
  *      Author: qiang.liu
  */
 
-#include "Shape.h"
-
+#include <ACEnv.h>
+#include <ACShape.h>
 #include <stdio.h>
 
-#include "env.h"
 //#include "opencv2/opencv.hpp"
 
 namespace ac {

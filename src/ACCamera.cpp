@@ -1,20 +1,20 @@
 /*
- * ShapeFeature.cpp
+ * Camera.cpp
  *
  *  Created on: 2015年9月19日
  *      Author: qiang
  */
 
-#include "ShapeFeature.h"
+#include <ACCamera.h>
 
 namespace ac {
 
-ShapeFeature::ShapeFeature() {
+Camera::Camera() {
 	// TODO Auto-generated constructor stub
 
 }
 
-ShapeFeature::~ShapeFeature() {
+Camera::~Camera() {
 	// TODO Auto-generated destructor stub
 }
 

@@ -1,20 +1,20 @@
 /*
- * Shadow.cpp
+ * ShapeFeature.cpp
  *
  *  Created on: 2015年9月19日
  *      Author: qiang
  */
 
-#include "Shadow.h"
+#include <ACShapeFeature.h>
 
 namespace ac {
 
-Shadow::Shadow() {
+ShapeFeature::ShapeFeature() {
 	// TODO Auto-generated constructor stub
 
 }
 
-Shadow::~Shadow() {
+ShapeFeature::~ShapeFeature() {
 	// TODO Auto-generated destructor stub
 }
 

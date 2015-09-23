@@ -5,8 +5,8 @@
  *      Author: qiang
  */
 
-#ifndef SHAPEFEATURE_H_
-#define SHAPEFEATURE_H_
+#ifndef ACSHAPEFEATURE_H_
+#define ACSHAPEFEATURE_H_
 
 namespace ac {
 
@@ -18,4 +18,4 @@ public:
 
 } /* namespace my */
 
-#endif /* SHAPEFEATURE_H_ */
+#endif /* ACSHAPEFEATURE_H_ */

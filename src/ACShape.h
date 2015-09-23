@@ -12,10 +12,11 @@
 
 
 //#include "Shadow.h
-#include "ShapeFeature.h"
-#include "Camera.h"
-#include "env.h"
-#include "Shadow.h"
+#include <ACEnv.h>
+#include <ACShapeFeature.h>
+
+#include "ACCamera.h"
+#include "ACShadow.h"
 //#include "opencv2/opencv.hpp"
 
 #ifndef SHAPE_H_

@@ -5,8 +5,8 @@
  *      Author: qiang
  */
 
-#ifndef CAMERA_H_
-#define CAMERA_H_
+#ifndef ACCAMERA_H_
+#define ACCAMERA_H_
 
 namespace ac {
 
@@ -18,4 +18,4 @@ public:
 
 } /* namespace my */
 
-#endif /* CAMERA_H_ */
+#endif /* ACCAMERA_H_ */
