@@ -34,7 +34,7 @@ private:
 
 #ifdef DEBUG_MODE_
 	//如果是调试模式，增加计时功能。
-	double t ;
+	double t = 0 ;
 #endif
 
 	/**
@@ -47,7 +47,8 @@ private:
 	 * Mat M(rows,cols,CV_16S(1));
 	 *
 	 */
-	Mat _gradientValue;
+	//Mat _gradientValue;
+	vector<Mat> _gradientValue;
 
 	/**
 	 * 用于存储各通道梯度的和值
@@ -61,7 +62,7 @@ private:
 	 * src 源图，一个单通道、8位的矩阵。
 	 * grad_Tar 目标，结果梯度，一个单通道、8位的矩阵。
 	 */
-	void computeGradientBySobel(Mat src,Mat grad);
+	Mat computeGradientBySobel(Mat src);
 	/**
 	 * 计算梯度和值
 	 */
@@ -90,7 +91,8 @@ public:
 	/**
 	 * 取梯度值
 	 */
-	Mat getGradientValue();
+	vector<Mat> getGradientValue();
+	Mat getGradientValue(int channel);
 };
 
 } /* namespace ac */

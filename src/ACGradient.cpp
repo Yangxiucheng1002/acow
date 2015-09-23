@@ -8,10 +8,7 @@
 #include <ACEnv.h>
 #include <ACGradient.h>
 #include "ACException.h"
-//#include "opencv2/opencv.hpp"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -22,12 +19,9 @@ using namespace std;
 namespace ac {
 
 Gradient::Gradient() {
-	// TODO Auto-generated constructor stub
-
 }
 
 Gradient::~Gradient() {
-	// TODO Auto-generated destructor stub
 }
 
 Gradient::Gradient(Mat src) {
@@ -44,8 +38,8 @@ Gradient::Gradient(Mat src, int _gmethod) {
 	// 默认构造
 	Gradient();
 	//初始化参数。
-	_gradientValue = Mat(src.rows, src.cols, CV_16SC(src.channels())); //+1)); // 增加了一个通道，用来存储和值。不单独列了。
-	_gradientSumValue = Mat(src.rows, src.cols, CV_16SC(1));
+	//_gradientValue = Mat(src.rows, src.cols, CV_16SC(src.channels())); //+1)); // 增加了一个通道，用来存储和值。不单独列了。
+	//_gradientSumValue = Mat(src.rows, src.cols, CV_16SC(1));
 
 #ifdef DEBUG_MODE_
 	t = (double) getTickCount(); /************ 计时开始 ************/
@@ -54,27 +48,18 @@ Gradient::Gradient(Mat src, int _gmethod) {
 	// 高斯模糊，去噪。
 	GaussianBlur(src, src, Size(3, 3), 0, 0, BORDER_DEFAULT);
 
-	/****************************************************************************************
-	 *                  分成RGB+HSL通道检测，再将图像相加                                        *
-	 ****************************************************************************************/
+	// 分成RGB+HSL通道检测，再将图像相加
 	// 将源图切分通道
 	vector<Mat> bgr, btr;
-	split(src, bgr); // 貌似这里执行出错了，bgr里是空的。
-
-
-	split(_gradientValue, btr);
+	split(src, bgr);split(src, btr);
 
 	// 根据方法，计算各维度梯度值
 	switch (_gmethod) {
 	case AC_GRAD_SOBEL_: // 索贝尔算法
 		for (int i = 0; i < bgr.size(); i++) {
-
-			Mat _gray = bgr[i];
-			if(_gray.data)
-				cout << " 确实是这里有问题。" << endl;
-			computeGradientBySobel(_gray, btr[i]);
-
-			_gradientSumValue += btr[i]; // 一边分解，一边累加和值。
+			btr[i] = computeGradientBySobel((Mat)bgr[i]);
+			this->_gradientValue.push_back((Mat)btr[i]); // 向_gradientValue里加结果。
+//			cout << _gradientValue.size() << endl;
 		}
 
 		break;
@@ -90,16 +75,19 @@ Gradient::Gradient(Mat src, int _gmethod) {
 
 }
 
-void Gradient::computeGradientBySobel(Mat src_gray, Mat grad) {
+Mat Gradient::computeGradientBySobel(Mat src_gray) {
 
-	// TODO : 检查MAT的值是否正确。
-	if(src_gray.data) {
+	// 检查MAT的值是否正确。
+	if(!src_gray.data) {
 		throw ACException(EXP_NULL_MAT);
 	}
-
-	if(src_gray.channels()>1 || grad.channels()>1) {
+	if(src_gray.channels()>1 ) {
 		throw ACException(EXP_ONLY_ONE_CHANNEL_ACCEPT);
 	}
+
+	//定义返回值
+	Mat grad;
+	//grad = Mat(src_gray.rows, src_gray.cols, CV_16SC(1));
 
 	int scale = 1;
 	int delta = 0;
@@ -122,6 +110,9 @@ void Gradient::computeGradientBySobel(Mat src_gray, Mat grad) {
 	/// 合并梯度(近似)
 	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, grad);
 
+	if(!grad.data)
+		throw ACException("合并梯度结果为空");
+	return grad;
 }
 
 cv::Mat Gradient::getGradientSumValue(short threshold) {
@@ -131,8 +122,15 @@ cv::Mat Gradient::getGradientSumValue(short threshold) {
 	return ret;
 }
 
-Mat Gradient::getGradientValue() {
-	return _gradientValue;
+vector<Mat> Gradient::getGradientValue() {
+	if(this->_gradientValue.size()<1)
+		throw ACException("_gradientValue::vector<Mat>里元素数量小于1.");
+
+	return this->_gradientValue;
+}
+
+Mat Gradient::getGradientValue(int channel) {
+	return (Mat)(_gradientValue.at(channel));
 }
 
 } /* namespace ac */
