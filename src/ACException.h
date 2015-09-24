@@ -9,6 +9,9 @@
 #ifndef ACEXCEPTION_H_
 #define ACEXCEPTION_H_
 
+
+namespace ac {
+
 //未指定代码的错误
 #ifndef EXP_UNDEFINED
 #define EXP_UNDEFINED 0
@@ -23,8 +26,6 @@
 #ifndef EXP_ONLY_ONE_CHANNEL_ACCEPT
 #define EXP_ONLY_ONE_CHANNEL_ACCEPT 2
 #endif
-
-namespace ac {
 
 using std::string;
 

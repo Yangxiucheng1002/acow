@@ -18,6 +18,11 @@
 #define DEBUG_MODE_ true
 #endif
 
+
+using namespace cv;
+
+namespace ac {
+
 /**
  * 梯度计算方法类型，默认为索贝尔算法计算x,y方向，做加权平均。
  *
@@ -25,14 +30,17 @@
  */
 #define AC_GRAD_SOBEL_ 0
 
-using namespace cv;
-
-namespace ac {
 
 class Gradient {
+
+	/**
+	 * 多通道梯度值类型。
+	 */
+	typedef vector<Mat>  GRADIENT_VALUE;
+
 private:
 
-#ifdef DEBUG_MODE_
+#if(DEBUG_MODE_)
 	//如果是调试模式，增加计时功能。
 	double t = 0 ;
 #endif
@@ -48,21 +56,22 @@ private:
 	 *
 	 */
 	//Mat _gradientValue;
-	vector<Mat> _gradientValue;
+	GRADIENT_VALUE _gradientValue;
 
 	/**
 	 * 用于存储各通道梯度的和值
 	 * Mat M(rows,cols,CV_16S(1));
 	 */
 	//int _gradientSumValue[][]; // 这个先不用了。实在需要内存和CPU优化的话，就改这里。
-	Mat _gradientSumValue;
+	Mat* _gradientSumValue;
 
 	/**
 	 * 用索贝尔算法计算一维矩阵的梯度，并将结果保存到_gradientValue中去。
 	 * src 源图，一个单通道、8位的矩阵。
 	 * grad_Tar 目标，结果梯度，一个单通道、8位的矩阵。
 	 */
-	Mat computeGradientBySobel(Mat src);
+	Mat computeGradientBySobel(Mat &src);
+	Mat* _computeGradientBySobel(Mat &src);
 	/**
 	 * 计算梯度和值
 	 */
@@ -71,27 +80,35 @@ private:
 
 public:
 	virtual ~Gradient();
+	// 测试用的，可以删除。
+	Mat temp1;
+	Mat* temp2;
+
+
 
 	/**
 	 * 按给定源图像，生成梯度矩阵。
 	 */
-	Gradient(Mat src);
+	Gradient(Mat& src);
 
 	/**
 	 * 按给定源图像和梯度计算方法，生成梯度矩阵。
 	 */
-	Gradient(Mat src,int _gmethod);
+	Gradient(Mat& src,int _gmethod);
 
 	/**
 	 * 取梯度和值
 	 */
 	Mat getGradientSumValue(short threshold);
+	Mat* _getGradientSumValue(short threshold);
 
 
 	/**
 	 * 取梯度值
 	 */
+	vector<Mat>* _getGradientValue();
 	vector<Mat> getGradientValue();
+	Mat* _getGradientValue(int channel);
 	Mat getGradientValue(int channel);
 };
 

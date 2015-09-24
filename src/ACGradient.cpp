@@ -19,17 +19,29 @@ using namespace std;
 namespace ac {
 
 Gradient::Gradient() {
+	_gradientValue = (vector<Mat>(0));
+	temp1 = imread("/Users/qiang/project/temp/e1.jpg");
+	if(!temp1.data)
+		cout << " 没有加载成功图像 " << endl;
+	else
+		cout << "加载成功图像" << endl;
+	// TODO: 下面这句错了，需要学习一下指针用法。
+	//Mat t = *temp2;
+	temp2 = &temp1;
+	Mat t1;
+	temp1.copyTo(t1);
+	cout << "加载成功图像" << endl;
 }
 
 Gradient::~Gradient() {
 }
 
-Gradient::Gradient(Mat src) {
+Gradient::Gradient(Mat& src) {
 	//默认采用索贝尔算法计算梯度
 	Gradient(src, AC_GRAD_SOBEL_);
 }
 
-Gradient::Gradient(Mat src, int _gmethod) {
+Gradient::Gradient(Mat& src, int _gmethod) {
 	// 不能给空数据。如果有。以报错处理。
 	if (!src.data) {
 		throw ACException(EXP_NULL_MAT);
@@ -41,7 +53,7 @@ Gradient::Gradient(Mat src, int _gmethod) {
 	//_gradientValue = Mat(src.rows, src.cols, CV_16SC(src.channels())); //+1)); // 增加了一个通道，用来存储和值。不单独列了。
 	//_gradientSumValue = Mat(src.rows, src.cols, CV_16SC(1));
 
-#ifdef DEBUG_MODE_
+#if(DEBUG_MODE_)
 	t = (double) getTickCount(); /************ 计时开始 ************/
 #endif
 
@@ -50,16 +62,22 @@ Gradient::Gradient(Mat src, int _gmethod) {
 
 	// 分成RGB+HSL通道检测，再将图像相加
 	// 将源图切分通道
-	vector<Mat> bgr, btr;
-	split(src, bgr);split(src, btr);
+	vector<Mat> bgr;//, btr;
+	split(src, bgr);//split(src, btr);
 
 	// 根据方法，计算各维度梯度值
 	switch (_gmethod) {
 	case AC_GRAD_SOBEL_: // 索贝尔算法
 		for (int i = 0; i < bgr.size(); i++) {
-			btr[i] = computeGradientBySobel((Mat)bgr[i]);
-			this->_gradientValue.push_back((Mat)btr[i]); // 向_gradientValue里加结果。
-//			cout << _gradientValue.size() << endl;
+			Mat _btr = computeGradientBySobel((Mat&)bgr[i]);
+//			cout << "fhrew" << endl;
+
+			// TODO: 看起来，下面这句没有按预期执行。
+			_gradientValue.push_back(_btr); // 向_gradientValue里加结果值。
+
+
+//			cout << "G333333" << endl;
+//			cout << _gradientValue.size() << " a " << endl;
 		}
 
 		break;
@@ -68,14 +86,15 @@ Gradient::Gradient(Mat src, int _gmethod) {
 	// 计算梯度和值
 	// computeGradientSumValue(src); // 这个方法不用了。
 
-#ifdef DEBUG_MODE_
+#if(DEBUG_MODE_)
 	t = ((double) getTickCount() - t) / getTickFrequency(); /************ 计时结束 ************/
 	cout << "Times passed in millenseconds: " << t * 1000 << endl; /************ 计时输出 ************/
 #endif
+//	cout << _gradientValue.size() << " b" << endl;
 
 }
 
-Mat Gradient::computeGradientBySobel(Mat src_gray) {
+Mat Gradient::computeGradientBySobel(Mat &src_gray) {
 
 	// 检查MAT的值是否正确。
 	if(!src_gray.data) {
@@ -123,10 +142,12 @@ cv::Mat Gradient::getGradientSumValue(short threshold) {
 }
 
 vector<Mat> Gradient::getGradientValue() {
-	if(this->_gradientValue.size()<1)
+	if(_gradientValue.size()<1)
 		throw ACException("_gradientValue::vector<Mat>里元素数量小于1.");
 
-	return this->_gradientValue;
+	cout << " 这里就是OK了 " << endl;
+	vector<Mat> ret;
+	return ret ;
 }
 
 Mat Gradient::getGradientValue(int channel) {
