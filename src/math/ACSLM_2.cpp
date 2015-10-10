@@ -4,31 +4,25 @@
  *  Created on: 2015年10月10日
  *      Author: qiang.liu
  */
-
-/*
- * para.c
- *
- *
- *  Created on: 2015年9月25日
- *      Author: qiang.liu
- *
- * 写完，还没来得及写注释，已通过Matlab的polyfit验证（阶数高或者数据量太大会有double数据溢出的危险，低阶的都吻合），
- * 时间有点紧，程序注释，数学推导等时间充裕一点再贴上来
- *
- */
-
-//
-// 最小二乘法拟合.cpp : Defines the entry point for the console application.
-//
-//#include "stdafx.h"
 #include "stdlib.h"
 #include "math.h"
-#include <stdio.h>
-//#include <io.h>
-//
+
+//把二维的数组与一维数组的转换，也可以直接用二维数组，只是我的习惯是不用二维数组
 #define ParaBuffer(Buffer,Row,Col) (*(Buffer + (Row) * (SizeSrc + 1) + (Col)))
 //
+
 /***********************************************************************************
+从txt文件里读取double型的X，Y数据
+txt文件里的存储格式为
+X1  Y1
+X2  Y2
+X3  Y3
+X4  Y4
+X5  Y5
+X6  Y6
+X7  Y7
+X8  Y8
+函数返回X，Y，以及数据的数目（以组为单位）
 ***********************************************************************************/
 static int GetXY(const char* FileName, double* X, double* Y, int* Amount)
 {
@@ -38,12 +32,15 @@ static int GetXY(const char* FileName, double* X, double* Y, int* Amount)
         for (*Amount = 0; !feof(File); X++, Y++, (*Amount)++)
                 if (2 != fscanf(File, (const char*)"%lf %lf", X, Y))
                         break;
-                else
-                	printf("getDataFromFile : %lf %lf ",X,Y);
         fclose(File);
         return 0;
 }
+
 /***********************************************************************************
+打印系数矩阵，只用于调试，不具备运算功能
+对于一个N阶拟合，它的系数矩阵大小是（N + 1）行（N + 2）列
+double* Para：系数矩阵存储地址
+int SizeSrc：系数矩阵大小（SizeSrc）行（SizeSrc + 1）列
 ***********************************************************************************/
 static int PrintPara(double* Para, int SizeSrc)
 {
@@ -57,7 +54,12 @@ static int PrintPara(double* Para, int SizeSrc)
         printf("\r\n");
         return 0;
 }
+
 /***********************************************************************************
+系数矩阵的限幅处理，防止它溢出，目前这个函数很不完善，并不能很好地解决这个问题
+原理：矩阵解行列式，同一行乘以一个系数，行列式的解不变
+当然，相对溢出问题，还有一个精度问题，也是同样的思路，现在对于这两块的处理很不完善，有待优化
+以行为单位处理
 ***********************************************************************************/
 static int ParalimitRow(double* Para, int SizeSrc, int Row)
 {
@@ -76,7 +78,9 @@ static int ParalimitRow(double* Para, int SizeSrc, int Row)
                 ParaBuffer(Para, Row, i) /= Max;
         return 0;
 }
+
 /***********************************************************************************
+同上，以矩阵为单位处理
 ***********************************************************************************/
 static int Paralimit(double* Para, int SizeSrc)
 {
@@ -86,7 +90,9 @@ static int Paralimit(double* Para, int SizeSrc)
                         return -1;
         return 0;
 }
+
 /***********************************************************************************
+系数矩阵行列式变换
 ***********************************************************************************/
 static int ParaPreDealA(double* Para, int SizeSrc, int Size)
 {
@@ -101,7 +107,10 @@ static int ParaPreDealA(double* Para, int SizeSrc, int Size)
         }
         return 0;
 }
+
 /***********************************************************************************
+系数矩阵行列式变换，与ParaPreDealA配合
+完成第一次变换，变换成三角矩阵
 ***********************************************************************************/
 static int ParaDealA(double* Para, int SizeSrc)
 {
@@ -111,7 +120,9 @@ static int ParaDealA(double* Para, int SizeSrc)
                         return -1;
         return 0;
 }
+
 /***********************************************************************************
+系数矩阵行列式变换
 ***********************************************************************************/
 static int ParaPreDealB(double* Para, int SizeSrc, int OffSet)
 {
@@ -126,7 +137,10 @@ static int ParaPreDealB(double* Para, int SizeSrc, int OffSet)
         }
         return 0;
 }
+
 /***********************************************************************************
+系数矩阵行列式变换，与ParaPreDealB配合
+完成第一次变换，变换成对角矩阵，变换完毕
 ***********************************************************************************/
 static int ParaDealB(double* Para, int SizeSrc)
 {
@@ -144,7 +158,9 @@ static int ParaDealB(double* Para, int SizeSrc)
         }
         return 0;
 }
+
 /***********************************************************************************
+系数矩阵变换
 ***********************************************************************************/
 static int ParaDeal(double* Para, int SizeSrc)
 {
@@ -158,7 +174,14 @@ static int ParaDeal(double* Para, int SizeSrc)
                 return -1;
         return 0;
 }
+
 /***********************************************************************************
+最小二乘法的第一步就是从XY数据里面获取系数矩阵
+double* Para：系数矩阵地址
+const double* X：X数据地址
+const double* Y：Y数据地址
+int Amount：XY数据组数
+int SizeSrc：系数矩阵大小（SizeSrc）行（SizeSrc + 1）列
 ***********************************************************************************/
 static int GetParaBuffer(double* Para, const double* X, const double* Y, int Amount, int SizeSrc)
 {
@@ -177,7 +200,9 @@ static int GetParaBuffer(double* Para, const double* X, const double* Y, int Amo
                         ParaBuffer(Para, i, j) = ParaBuffer(Para, i - 1, j + 1);
         return 0;
 }
+
 /***********************************************************************************
+整个计算过程
 ***********************************************************************************/
 int Cal(const double* BufferX, const double* BufferY, int Amount, int SizeSrc, double* ParaResK)
 {
@@ -189,17 +214,26 @@ int Cal(const double* BufferX, const double* BufferY, int Amount, int SizeSrc, d
         free(ParaK);
         return 0;
 }
+
 /***********************************************************************************
+测试main函数
+数据组数：20
+阶数：5
 ***********************************************************************************/
 int main(int argc, char* argv[])
 {
+        //数据组数
         int Amount;
+        //XY缓存，系数矩阵缓存
         double BufferX[1024], BufferY[1024], ParaK[6];
         if (GetXY((const char*)"test.txt", (double*)BufferX, (double*)BufferY, &Amount))
                 return 0;
+        //运算
         Cal((const double*)BufferX, (const double*)BufferY, Amount, sizeof(ParaK) / sizeof(double), (double*)ParaK);
+        //输出系数
         for (Amount = 0; Amount < sizeof(ParaK) / sizeof(double); Amount++)
                 printf("ParaK[%d] = %lf!\r\n", Amount, ParaK[Amount]);
+        //屏幕暂留
+        system("pause");
         return 0;
 }
-

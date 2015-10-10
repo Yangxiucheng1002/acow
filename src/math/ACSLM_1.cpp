@@ -355,6 +355,7 @@ BOOL LineFit(double *a, double *b, double t[], int len)
     }
 
 }
+
 BOOL LineFit2(double *a, double *b, double t[], int len)
 {
     int i;
