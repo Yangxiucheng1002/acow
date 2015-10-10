@@ -1,8 +1,11 @@
 /*
- * ACSLM_1.cpp
- *
- *  Created on: 2015年10月9日
- *      Author: qiang.liu
+ *  ACSLM_1.cpp
+ *  Copyright: 我的版权信息
+ *  Author: qiang.liu
+ *  Date: 2015年10月9日
+ *  Description: 一些数学算法。包括最小二乘法拟合曲线等。
+ *  Version: 版本
+ *  History:
  */
 
 
@@ -12,9 +15,15 @@
 
 //多项式拟合用函数
 
+/**
+ * 求解2X2矩阵, 返回解存在b
+ * @param a 乘数矩阵
+ * @param b 被乘数矩阵。同时做为返回解。
+ * @return
+ */
 int GainParam2(double a[][2], double b[])
 {
-    double x, y;
+    double x, y; //
     int i;
 
     y=a[0][0]*a[1][1]-a[0][1]*a[1][0];
@@ -320,14 +329,33 @@ int GainParam4(double a[][4], double b[])
 
 
 //累加矩阵
+/**
+ *
+ * @param mask
+ * @param t
+ * @return
+ */
+BOOL LineFit(Mat mask,double t[]){
+	// 只接受8U的二值图像。
+	CV_Assert(mask.depth() != sizeof(uchar));
+
+	double *a,  *b;
+	int len;
+
+	// 将mask点阵，变成坐标数组
+
+	// 调用拟合方法
+	return LineFit(a, b, t, len);
+}
 
 BOOL LineFit(double *a, double *b, double t[], int len)
 {
     int i;
-    double x,y;
-    double m[2][2]={0};
-    double n[2]={0};
+    double x,y; // xy临时变量
+    double m[2][2]={0}; // 二维矩阵左侧变量
+    double n[2]={0}; // 乘数变量
 
+    // 根据坐标，计算矩阵运算的各个值
     for(i=0;i<len;i++)
     {
         x=a[i];
@@ -342,6 +370,7 @@ BOOL LineFit(double *a, double *b, double t[], int len)
     t[0]=n[0];
     t[1]=n[1];
 
+    // 进行矩阵运算
     i=GainParam2(m,t);
     if(!i)
         return TRUE;
@@ -354,6 +383,10 @@ BOOL LineFit(double *a, double *b, double t[], int len)
         return FALSE;
     }
 
+}
+
+
+BOOL LineFit2(Mat mask, double t[]) {
 }
 
 BOOL LineFit2(double *a, double *b, double t[], int len)
@@ -402,6 +435,10 @@ BOOL LineFit2(double *a, double *b, double t[], int len)
             printf("矩阵第三列迹为零");
     }
     return FALSE;
+}
+
+
+bool LineFit3(Mat mask, double t[]) {
 }
 
 BOOL LineFit3(double *a, double *b, double t[], int len)

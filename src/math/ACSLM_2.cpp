@@ -6,6 +6,7 @@
  */
 #include "stdlib.h"
 #include "math.h"
+#include <stdio.h>
 
 //把二维的数组与一维数组的转换，也可以直接用二维数组，只是我的习惯是不用二维数组
 #define ParaBuffer(Buffer,Row,Col) (*(Buffer + (Row) * (SizeSrc + 1) + (Col)))
@@ -220,6 +221,7 @@ int Cal(const double* BufferX, const double* BufferY, int Amount, int SizeSrc, d
 数据组数：20
 阶数：5
 ***********************************************************************************/
+/*
 int main(int argc, char* argv[])
 {
         //数据组数
@@ -237,3 +239,4 @@ int main(int argc, char* argv[])
         system("pause");
         return 0;
 }
+*/
