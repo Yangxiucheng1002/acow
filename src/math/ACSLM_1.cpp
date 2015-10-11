@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include "ACMath.h"
+#include "ACException.h"
 
 //多项式拟合用函数
 
@@ -336,15 +337,40 @@ int GainParam4(double a[][4], double b[])
  * @return
  */
 BOOL LineFit(Mat mask,double t[]){
-	// 只接受8U的二值图像。
+	// 只接受8U、单通道的二值图像。
 	CV_Assert(mask.depth() != sizeof(uchar));
+	if(mask.channels()!=1) {
+		//throw ACException("只接受单通道mat数据。");
+	}
+	// 检查数据
+	if(!mask.data) {
+		//throw ac::ACException(EXP_NULL_MAT);
+	}
 
 	double *a,  *b;
 	int len;
 
 	// 将mask点阵，变成坐标数组
+	int nRows = mask.rows;
+	int nCols = mask.cols;
+    if (mask.isContinuous())
+    {
+        nCols *= nRows;
+        nRows = 1;
+    }
 
-	// 调用拟合方法
+    int i,j;
+    uchar* p;
+    for( i = 0; i < nRows; ++i)
+    {
+        p = mask.ptr<uchar>(i);
+        for ( j = 0; j < nCols; ++j)
+        {
+            p[j] = table[p[j]];
+        }
+    }
+
+    // 调用拟合方法
 	return LineFit(a, b, t, len);
 }
 
