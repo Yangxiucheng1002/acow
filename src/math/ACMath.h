@@ -5,6 +5,10 @@
  *      Author: qiang.liu
  */
 
+
+#ifndef MATH_ACMATH_H_
+#define MATH_ACMATH_H_
+
 #ifndef BOOL
 #define BOOL bool
 #endif
@@ -16,9 +20,6 @@
 #ifndef FALSE
 #define FALSE false
 #endif
-
-#ifndef MATH_ACMATH_H_
-#define MATH_ACMATH_H_
 
 //多项式拟合用函数
 //#include "opencv2/opencv.hpp"
