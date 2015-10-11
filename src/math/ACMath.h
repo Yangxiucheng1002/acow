@@ -21,7 +21,8 @@
 #define MATH_ACMATH_H_
 
 //多项式拟合用函数
-#include "opencv2/opencv.hpp"
+//#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 using namespace cv;
 using namespace std;
 //
@@ -54,6 +55,8 @@ int GainParam2(double a[][2], double b[]); //
 
 // --------------------------------------------------------------
 //a、b分别是X Y坐标点集合，len是录入的坐标点数量.t是个中间过程用变量数组--长度由拟合阶数决定
+//TODO:没有做降噪处理。
+//TODO:应该将double改为uchar，减小内存，提高运算速度，但会降低准确性。
 
 /**
  * 使用3次二项式拟合曲线
@@ -106,5 +109,13 @@ BOOL LineFit(double *x, double *y, double t[], int len);
  * @return
  */
 BOOL LineFit(Mat mask,double t[]);
+
+/**
+ * 根据函数，给定x坐标，计算y坐标。
+ * @param x x坐标
+ * @param t 函数参数，根据拟合方式不同，数量不同。
+ * @return y坐标
+ */
+int getY(int x,double t[],int len);
 
 #endif /* MATH_ACMATH_H_ */
