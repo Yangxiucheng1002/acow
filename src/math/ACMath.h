@@ -21,6 +21,11 @@
 #define FALSE false
 #endif
 
+#ifndef _DEBUGMODE
+#define _DEBUGMODE true
+#endif
+
+
 //多项式拟合用函数
 //#include "opencv2/opencv.hpp"
 #include <opencv2/opencv.hpp>

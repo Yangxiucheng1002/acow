@@ -317,13 +317,18 @@ int GainParam4(double a[][4], double b[]) {
  * @return
  */
 BOOL LineFit(Mat mask, double t[]) {
-	// 只接受8U、单通道的二值图像。
-	CV_Assert(mask.depth() != sizeof(uchar));
+#if(_DEBUGMODE)
+	double time = (double)getTickCount(); // 调试计时
+#endif
+
+	CV_Assert(mask.depth() != sizeof(uchar));// 只接受8U、单通道的二值图像。
 	if (mask.channels() != 1) {
+		printf("channels!=1");
 		//throw ACException("只接受单通道mat数据。");
 	}
-	// 检查数据
-	if (!mask.data) {
+
+	if (!mask.data) { // 检查数据
+		printf("!data");
 		//throw ac::ACException(EXP_NULL_MAT);
 	}
 
@@ -341,7 +346,6 @@ BOOL LineFit(Mat mask, double t[]) {
 	 */
 
 	uchar* p;
-//	int ic1;
 	uchar x, y; // xy临时变量
 	double m[2][2] = { 0 }; // 二维矩阵左侧变量
 	double n[2] = { 0 }; // 乘数变量
@@ -351,22 +355,20 @@ BOOL LineFit(Mat mask, double t[]) {
 	for (int i = 0; i < nRows; ++i) {
 		p = mask.ptr<uchar>(i);
 		for (int j = 0; j < nCols; ++j) {
-			//p[j] = table[p[j]];
-
-			//-------------------做曲线拟合运算部分。----------------------
+			//-------------------做曲线拟合运算部分，开始。----------------------
 			//TODO: 降噪处理。还没有把重复点去掉；
-			if (!(p[i] == 0)) // 把（0，0）去掉
+			if ((p[j] == 0)) // 把（0，0）去掉
 			{
-				x = i;
-				y = j;
+				x = j; // 行是X,列是Y。
+				y = i;
+				printf("输入点坐标： %d , %d\n",x,y);
 				m[0][0] += x;
 				m[0][1] += 1;
 				m[1][0] += x * x;
 				n[0] += y;
 				n[1] += x * y;
 			}
-			//-------------------做曲线拟合运算部分。----------------------
-
+			//-------------------做曲线拟合运算部分，结束。----------------------
 		}
 	}
 
@@ -376,6 +378,11 @@ BOOL LineFit(Mat mask, double t[]) {
 	t[1] = n[1];
 	// 进行矩阵运算
 	int ilab = GainParam2(m, t);
+#if(_DEBUGMODE)
+	//调试计时
+	time = ((double)getTickCount() - time)/getTickFrequency();
+	cout << "Times passed in seconds: " << time << endl;
+#endif
 
 	if (!ilab)
 		return TRUE;
@@ -673,20 +680,22 @@ BOOL LineFit3(double *a, double *b, double t[], int len) {
 		else if (i == 2)
 			printf("矩阵第一列全为零");
 		else if (i == 3)
-			printf("矩阵第二列迹为零");
+			printf("矩阵第二列全为零");
 		else if (i == 4)
-			printf("矩阵第三列迹为零");
+			printf("矩阵第三列全为零");
 		else
-			printf("无定解，第四列迹为零");
+			printf("无定解，第四列全为零");
 	}
 	return FALSE;
 }
 
 int getY(int x, double t[],int len) {
 	switch(len){
-	case(2):
-			return t[0]+t[1]*x;
-
+	case(2):{
+			int y = t[0]+t[1]*x;
+			printf("abxy:%f, %f : %d, %d \n",t[0],t[1],x,y);
+			return y;
+	}
 	case(3):
 			return t[0]+t[1]*x+t[2]*x*x;
 	case(4):
