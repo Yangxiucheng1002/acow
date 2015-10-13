@@ -48,6 +48,8 @@ public:
 
 	///
 	/// \brief 直线拟合-一元回归,拟合的结果可以使用getFactor获取，或者使用getSlope获取斜率，getIntercept获取截距
+	/// \brief 这上可能没有什么实际用。因在这里中是执行了扫描图像，取得数据，但目前只做了一个计算，可能会消耗性能。
+	/// \brief 正确的做法是在应用时，一次扫描图像，多次计算。
 	/// \param mask 待观察的图
 	/// \param isSaveFitYs 拟合后的数据是否保存，默认否
 	///
@@ -389,6 +391,16 @@ private:
 		for (i = n - 1; i >= 0; x[i] /= A[i * n + i], i--)
 			for (j = i + 1, x[i] = b[i]; j < n; j++)
 				x[i] -= A[i * n + j] * x[j];
+	}
+
+	/// \brief 图像中，绘制拟合线。目前目的是用于验证拟合曲线的效果。
+	/// \param tar 要绘制的图
+	/// \param startx 开始x坐标
+	/// \param endx 结束x坐标
+	/// \return 绘画好的结果。没用tar，是怕传参错误。
+	//TODO : 从woca里找出这一段，传入Mat指针。
+	Mat drawLine(Mat* tar,int startx,int endx){
+
 	}
 };
 
