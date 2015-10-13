@@ -26,7 +26,7 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 /*
-  */
+ */
 namespace ac {
 using namespace cv;
 ///
@@ -46,7 +46,12 @@ public:
 	~Fit() {
 	}
 
-	template<typename T>
+	///
+	/// \brief 直线拟合-一元回归,拟合的结果可以使用getFactor获取，或者使用getSlope获取斜率，getIntercept获取截距
+	/// \param mask 待观察的图
+	/// \param isSaveFitYs 拟合后的数据是否保存，默认否
+	///
+	//template<typename T>
 	bool linearFit(Mat mask, bool isSaveFitYs = false) {
 
 #if(_DEBUGMODE)
@@ -71,8 +76,12 @@ public:
 		//uchar x, y; // xy临时变量
 		//double m[2][2] = { 0 }; // 二维矩阵左侧变量
 		//double n[2] = { 0 }; // 乘数变量
-		const std::vector<T>& x = vector<T>();
-		const std::vector<T>& y = vector<T>();
+		//const std::vector<typename T>& x = vector<typename T>();
+		//const std::vector<typename T>& y = vector<typename T>();
+		//const std::vector<int>& x = *vector<int>();
+		//const std::vector<int>& y = *vector<int>();
+		std::vector<int> x ;
+		std::vector<int> y ;
 
 		//TODO: 这里要扫描一遍图，目前只做了为了拟合曲线而做的矩阵计算，如果要提高性能，可以将多个计算放到这里，而不是多次扫描图像。
 		// 根据坐标，计算矩阵运算的各个值
@@ -88,7 +97,7 @@ public:
 				}
 			}
 		}
-		return linearFit(x, y, isSaveFitYs);
+		return linearFit(x, y, isSaveFitYs); // 可能错了。应该：return linearFit(&x, &y, isSaveFitYs);
 	}
 
 	///
@@ -99,10 +108,11 @@ public:
 	/// \param isSaveFitYs 拟合后的数据是否保存，默认否
 	///
 	template<typename T>
-	bool linearFit(const std::vector<T>& x,
-			const std::vector<T>& y, bool isSaveFitYs = false) {
+	bool linearFit(const std::vector<T>& x, const std::vector<T>& y,
+			bool isSaveFitYs = false) {
 		return linearFit(&x[0], &y[0], getSeriesLength(x, y), isSaveFitYs);
 	}
+
 	template<typename T>
 	bool linearFit(const T* x, const T* y, size_t length, bool isSaveFitYs =
 			false) {
@@ -121,6 +131,13 @@ public:
 		calcError(x, y, length, this->ssr, this->sse, this->rmse, isSaveFitYs);
 		return true;
 	}
+
+	///
+	/// \brief 多项式拟合，拟合y=a0+a1*x+a2*x^2+……+apoly_n*x^poly_n
+	/// \param mask 待观察的图
+	/// \param poly_n 期望拟合的阶数，若poly_n=2，则y=a0+a1*x+a2*x^2
+	/// \param isSaveFitYs 拟合后的数据是否保存，默认是
+	///
 	template<typename T>
 	bool polyfit(Mat mask, int poly_n, bool isSaveFitYs = true) {
 #if(_DEBUGMODE)
@@ -161,6 +178,7 @@ public:
 		}
 		return polyfit(x, y, poly_n, isSaveFitYs);
 	}
+
 	///
 	/// \brief 多项式拟合，拟合y=a0+a1*x+a2*x^2+……+apoly_n*x^poly_n
 	/// \param x 观察值的x
@@ -169,9 +187,8 @@ public:
 	/// \param isSaveFitYs 拟合后的数据是否保存，默认是
 	///
 	template<typename T>
-	void polyfit(const std::vector<T>& x,
-			const std::vector<T>& y, int poly_n, bool isSaveFitYs =
-					true) {
+	void polyfit(const std::vector<T>& x, const std::vector<T>& y, int poly_n,
+			bool isSaveFitYs = true) {
 		polyfit(&x[0], &y[0], getSeriesLength(x, y), poly_n, isSaveFitYs);
 	}
 	template<typename T>
@@ -282,8 +299,7 @@ public:
 	/// \return 最小的一个长度
 	///
 	template<typename T>
-	size_t getSeriesLength(const std::vector<T>& x,
-			const std::vector<T>& y) {
+	size_t getSeriesLength(const std::vector<T>& x, const std::vector<T>& y) {
 		return (x.size() > y.size() ? y.size() : x.size());
 	}
 	///
@@ -335,8 +351,8 @@ private:
 		r_rmse = sqrt(r_sse / (double(length)));
 	}
 	template<typename T>
-	void gauss_solve(int n, std::vector<T>& A,
-			std::vector<T>& x, std::vector<T>& b) {
+	void gauss_solve(int n, std::vector<T>& A, std::vector<T>& x,
+			std::vector<T>& b) {
 		gauss_solve(n, &A[0], &x[0], &b[0]);
 	}
 	template<typename T>
@@ -377,6 +393,5 @@ private:
 };
 
 }
-
 
 #endif /* MATH_ACSLM_H_ */
