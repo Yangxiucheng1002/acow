@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 #include "ACMath.h"
-#include "ACException.h"
+//#include "ACException.h"
 
 //多项式拟合用函数
 

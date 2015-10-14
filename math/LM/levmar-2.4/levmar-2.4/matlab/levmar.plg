@@ -1,0 +1,134 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: levmar - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "D:\Temp\RSP6343.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/levmar.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Documents and Settings\David\桌面\levmar-2.4\matlab\levmar.c"
+]
+Creating command line "cl.exe @D:\Temp\RSP6343.tmp" 
+Creating temporary file "D:\Temp\RSP6344.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/levmar.pdb" /debug /machine:I386 /out:"Debug/levmar.exe" /pdbtype:sept 
+".\Debug\levmar.obj"
+]
+Creating command line "link.exe @D:\Temp\RSP6344.tmp"
+<h3>Output Window</h3>
+Compiling...
+levmar.c
+d:\vc98\include\lmaccess.h(42) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(44) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(44) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(44) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(44) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(48) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(50) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(52) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(52) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(52) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(52) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(60) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(62) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(64) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(64) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(64) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(64) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(68) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(70) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(72) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(72) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(72) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(72) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(77) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(79) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(81) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(81) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(81) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(81) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(83) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(85) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(87) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(87) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(87) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(87) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(94) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(96) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(98) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(98) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(98) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(98) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(103) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(105) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(107) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(107) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(107) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(107) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(115) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(117) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(119) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(119) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(119) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(119) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(122) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(124) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(126) : error C2146: syntax error : missing ')' before identifier 'servername'
+d:\vc98\include\lmaccess.h(126) : error C2061: syntax error : identifier 'servername'
+d:\vc98\include\lmaccess.h(126) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(126) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(130) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(132) : error C2143: syntax error : missing '{' before '__stdcall'
+d:\vc98\include\lmaccess.h(134) : error C2146: syntax error : missing ')' before identifier 'domainname'
+d:\vc98\include\lmaccess.h(134) : error C2061: syntax error : identifier 'domainname'
+d:\vc98\include\lmaccess.h(134) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(134) : error C2059: syntax error : ','
+d:\vc98\include\lmaccess.h(138) : error C2059: syntax error : ')'
+d:\vc98\include\lmaccess.h(146) : error C2061: syntax error : identifier 'LPWSTR'
+d:\vc98\include\lmaccess.h(147) : error C2059: syntax error : '}'
+d:\vc98\include\lmaccess.h(150) : error C2061: syntax error : identifier 'LPWSTR'
+d:\vc98\include\lmaccess.h(151) : error C2061: syntax error : identifier 'usri1_password'
+d:\vc98\include\lmaccess.h(151) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(152) : error C2061: syntax error : identifier 'usri1_password_age'
+d:\vc98\include\lmaccess.h(152) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(153) : error C2061: syntax error : identifier 'usri1_priv'
+d:\vc98\include\lmaccess.h(153) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(154) : error C2061: syntax error : identifier 'usri1_home_dir'
+d:\vc98\include\lmaccess.h(154) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(155) : error C2061: syntax error : identifier 'usri1_comment'
+d:\vc98\include\lmaccess.h(155) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(156) : error C2061: syntax error : identifier 'usri1_flags'
+d:\vc98\include\lmaccess.h(156) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(157) : error C2061: syntax error : identifier 'usri1_script_path'
+d:\vc98\include\lmaccess.h(157) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(158) : error C2059: syntax error : '}'
+d:\vc98\include\lmaccess.h(161) : error C2061: syntax error : identifier 'LPWSTR'
+d:\vc98\include\lmaccess.h(162) : error C2061: syntax error : identifier 'usri2_password'
+d:\vc98\include\lmaccess.h(162) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(163) : error C2061: syntax error : identifier 'usri2_password_age'
+d:\vc98\include\lmaccess.h(163) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(164) : error C2061: syntax error : identifier 'usri2_priv'
+d:\vc98\include\lmaccess.h(164) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(165) : error C2061: syntax error : identifier 'usri2_home_dir'
+d:\vc98\include\lmaccess.h(165) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(166) : error C2061: syntax error : identifier 'usri2_comment'
+d:\vc98\include\lmaccess.h(166) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(167) : error C2061: syntax error : identifier 'usri2_flags'
+d:\vc98\include\lmaccess.h(167) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(168) : error C2061: syntax error : identifier 'usri2_script_path'
+d:\vc98\include\lmaccess.h(168) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(169) : error C2061: syntax error : identifier 'usri2_auth_flags'
+d:\vc98\include\lmaccess.h(169) : error C2059: syntax error : ';'
+d:\vc98\include\lmaccess.h(169) : fatal error C1003: error count exceeds 100; stopping compilation
+执行 cl.exe 时出错.
+
+
+
+<h3>Results</h3>
+levmar.exe - 1 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
