@@ -400,7 +400,29 @@ private:
 	/// \return 绘画好的结果。没用tar，是怕传参错误。
 	//TODO : 从woca里找出这一段，传入Mat指针。
 	Mat drawLine(Mat* tar,int startx,int endx){
+		uchar* p;
+		for(int r=0;r<tar->rows;r++){
+			p = tar->ptr(r);
+			for(int c=0;c<tar->cols;c++){
 
+			}
+		}
+	}
+
+	/// \brief 根据x,计算y
+	/// \param x
+	/// \return y值
+	int getY(int x) {
+		int pa = this->factor.size();
+		int ret = 0,temp = 1;
+			for(int i=0;i<pa;i++){
+				int a = factor.at(i);
+				temp = a* temp * x;
+
+				ret = ret + temp;
+
+			}
+		return ret;
 	}
 };
 
