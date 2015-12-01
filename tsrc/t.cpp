@@ -22,8 +22,9 @@ int main(int argc, char *argv[]) {
 	Mat src;//,tar;
 	// 点图
 	//src = imread("/users/qiang/project/temp/testSLM_1.jpg");
-	src = imread("/users/qiang/project/temp/test.png");
+	src = imread("/Users/qiang/project/temp/t1.png");
 	//src.copyTo(tar);tar.setTo(Scalar(0));
+	if(src.data) printf("can't load image.");
 	Fit fit =  Fit();
 	fit.linearFit(src,true);
 	int a = fit.getFactor(0);

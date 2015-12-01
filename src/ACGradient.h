@@ -20,6 +20,7 @@
 
 
 using namespace cv;
+using namespace std;
 
 namespace ac {
 
@@ -36,7 +37,7 @@ class Gradient {
 	/**
 	 * 多通道梯度值类型。
 	 */
-	typedef vector<Mat>  GRADIENT_VALUE;
+	typedef std::vector<Mat>  GRADIENT_VALUE;
 
 private:
 
@@ -106,8 +107,8 @@ public:
 	/**
 	 * 取梯度值
 	 */
-	vector<Mat>* _getGradientValue();
-	vector<Mat> getGradientValue();
+	std::vector<Mat>* _getGradientValue();
+	std::vector<Mat> getGradientValue();
 	Mat* _getGradientValue(int channel);
 	Mat getGradientValue(int channel);
 };

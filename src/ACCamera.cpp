@@ -5,7 +5,7 @@
  *      Author: qiang
  */
 
-#include <ACCamera.h>
+#include "ACCamera.h"
 
 namespace ac {
 

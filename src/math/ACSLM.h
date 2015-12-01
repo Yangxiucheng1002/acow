@@ -2,18 +2,18 @@
  * @file:		ACSLM_FIT.h
  * @Copyright: 	2015, qiang.liu.
  * @Author: 	qiang.liu
- * @Brief:		
+ * @Brief:
  * @Date: 		2015年10月13日
- * @Version:	 
- * @Description: 
- *    
+ * @Version:
+ * @Description:
+ *
  * 原做者：尘中远，于2014.03.20
  * 主页：http://blog.csdn.net/czyt1988/article/details/21743595
  * 参考：http://blog.csdn.net/maozefa/article/details/1725535
  * -----------------------------
  * @History:
  *    Date: 	2015年10月12日
- *    Version: 	  
+ *    Version:
  *    Changer: 	qiang.liu
  *    Description:
  *       函数范型在mac下的编译器与在vc下的编译器不同，做了修改。
@@ -22,6 +22,10 @@
 
 #ifndef MATH_ACSLM_H_
 #define MATH_ACSLM_H_
+
+#ifndef _DEBUGMODE
+#define _DEBUGMODE true
+#endif
 
 #include <vector>
 #include <opencv2/opencv.hpp>
@@ -62,7 +66,7 @@ public:
 
 		CV_Assert(mask.depth() != sizeof(uchar)); // 只接受8U、单通道的二值图像。
 		if (mask.channels() != 1) {
-			printf("channels!=1");
+			printf("channels!=1\n");
 			//throw ACException("只接受单通道mat数据。");
 		}
 
@@ -82,8 +86,8 @@ public:
 		//const std::vector<typename T>& y = vector<typename T>();
 		//const std::vector<int>& x = *vector<int>();
 		//const std::vector<int>& y = *vector<int>();
-		std::vector<int> x ;
-		std::vector<int> y ;
+		std::vector<int> x;
+		std::vector<int> y;
 
 		//TODO: 这里要扫描一遍图，目前只做了为了拟合曲线而做的矩阵计算，如果要提高性能，可以将多个计算放到这里，而不是多次扫描图像。
 		// 根据坐标，计算矩阵运算的各个值
@@ -92,10 +96,11 @@ public:
 			for (int j = 0; j < nCols; ++j) {
 				//-------------------做曲线拟合运算部分，开始。----------------------
 				//TODO: 降噪处理。还没有把重复点去掉；
-				if ((p[j] == 0)) // 把（0，0）去掉
+				if (!(p[j] == 0)) // 把（0，0）去掉
 				{
 					x.push_back(j); // 行是X,列是Y。
 					y.push_back(i);
+					// break; // 只取左边缘
 				}
 			}
 		}
@@ -121,13 +126,28 @@ public:
 		factor.resize(2, 0);
 		T t1 = 0, t2 = 0, t3 = 0, t4 = 0;
 		for (int i = 0; i < length; ++i) {
+#if(_DEBUGMODE)
+		//printf("linearFit xy=> %d %d\n",x[i],y[i]);
+#endif
 			t1 += x[i] * x[i];
 			t2 += x[i];
 			t3 += x[i] * y[i];
 			t4 += y[i];
 		}
-		factor[1] = (t3 * length - t2 * t4) / (t1 * length - t2 * t2);
-		factor[0] = (t1 * t4 - t2 * t3) / (t1 * length - t2 * t2);
+#if(_DEBUGMODE)
+		//printf("linearFit length=> %d \n",length);
+		//printf("linearFit t1t2t3t4=> %d %d %d %d \n",t1,t2,t3,t4);
+#endif
+		T p1 = (t3 * length - t2 * t4);
+		T p2 = (t1 * length - t2 * t2);
+		T p3 = (t1 * t4 - t2 * t3);
+		T p4 = (t1 * length - t2 * t2);
+
+		factor[1] = double(p1)/double(p2);
+		factor[0] = double(p3) /double(p4);
+#if(_DEBUGMODE)
+		printf("linearFit ab=> %f %f\n",factor[0],factor[1]);
+#endif
 		//////////////////////////////////////////////////////////////////////////
 		//计算误差
 		calcError(x, y, length, this->ssr, this->sse, this->rmse, isSaveFitYs);
@@ -140,8 +160,8 @@ public:
 	/// \param poly_n 期望拟合的阶数，若poly_n=2，则y=a0+a1*x+a2*x^2
 	/// \param isSaveFitYs 拟合后的数据是否保存，默认是
 	///
-	template<typename T>
-	bool polyfit(Mat mask, int poly_n, bool isSaveFitYs = true) {
+	//template<typename T>
+	void polyfit(Mat mask, int poly_n, bool isSaveFitYs = true) {
 #if(_DEBUGMODE)
 		double time = (double)getTickCount(); // 调试计时
 #endif
@@ -161,8 +181,10 @@ public:
 		int nCols = mask.cols;
 
 		uchar* p;
-		const std::vector<T>& x = vector<T>();
-		const std::vector<T>& y = vector<T>();
+		//const std::vector<int>& x = vector<int>();
+		//const std::vector<int>& y = vector<int>();
+		std::vector<int> x;
+		std::vector<int> y;
 
 		//TODO: 这里要扫描一遍图，目前只做了为了拟合曲线而做的矩阵计算，如果要提高性能，可以将多个计算放到这里，而不是多次扫描图像。
 		// 根据坐标，计算矩阵运算的各个值
@@ -171,7 +193,7 @@ public:
 			for (int j = 0; j < nCols; ++j) {
 				//-------------------做曲线拟合运算部分，开始。----------------------
 				//TODO: 降噪处理。还没有把重复点去掉；
-				if ((p[j] == 0)) // 把（0，0）去掉
+				if (!(p[j] == 0)) // 把（0，0）去掉
 				{
 					x.push_back(j); // 行是X,列是Y。
 					y.push_back(i);
@@ -221,6 +243,7 @@ public:
 		for (i = 0; i < poly_n + 1; i++)
 			for (j = 0; j < poly_n + 1; j++)
 				ata[i * (poly_n + 1) + j] = sumxx[i + j];
+
 		gauss_solve(poly_n + 1, ata, factor, sumxy);
 		//计算拟合后的数据并计算误差
 		fitedYs.reserve(length);
@@ -335,6 +358,54 @@ public:
 	double getFactor(size_t i) {
 		return factor.at(i);
 	}
+
+
+	/// \brief 图像中，绘制拟合线。目前目的是用于验证拟合曲线的效果。
+	/// \param tar 要绘制的图
+	/// \param startx 开始x坐标
+	/// \param endx 结束x坐标
+	/// \return 绘画好的结果。没用tar，是怕传参错误。
+	//TODO : 从woca里找出这一段，传入Mat指针。
+	Mat drawLine(Mat* tar, int startx, int endx) {
+		//uchar* p;
+		printf("parms a= %f ,b= %f \n",this->factor.at(0),factor.at(1));
+		for (int c = 0; c < tar->cols; c++) {
+			int y = int(getY(c));
+
+			//printf("drawLine. xy=> %d , %d\n",c,y);
+			printf(" %d \t %d\n",c,y);
+			if(y>=0 && y<tar->rows)
+				tar->at<uchar>(y,c) = 250;
+			//p = tar->at<uchar>(y,c);
+			//p = 100;
+		}
+		return *tar;
+	}
+
+	/// \brief 根据x,计算y
+	/// \param x
+	/// \return y值
+	int getY_(double x) {
+		int pa = this->factor.size();
+		double ret = 0.0 ;
+		double temp = 1.0;
+		if (factor.size() < 2) {
+			//throw ACEception("没有计算拟合曲线值");
+			return -1;
+		}
+		ret = factor.at(0);
+		for (int i = 1; i < pa; i++) {
+			double a = factor.at(i);
+			printf("getY: a = %d \n",a);
+			temp = temp * x;
+			ret = ret + a * temp;
+			printf("getY, xy => %d , %d\n",x,ret);
+		}
+		return int(ret);
+	}
+
+
+
 private:
 	template<typename T>
 	void calcError(const T* x, const T* y, size_t length, double& r_ssr,
@@ -391,38 +462,6 @@ private:
 		for (i = n - 1; i >= 0; x[i] /= A[i * n + i], i--)
 			for (j = i + 1, x[i] = b[i]; j < n; j++)
 				x[i] -= A[i * n + j] * x[j];
-	}
-
-	/// \brief 图像中，绘制拟合线。目前目的是用于验证拟合曲线的效果。
-	/// \param tar 要绘制的图
-	/// \param startx 开始x坐标
-	/// \param endx 结束x坐标
-	/// \return 绘画好的结果。没用tar，是怕传参错误。
-	//TODO : 从woca里找出这一段，传入Mat指针。
-	Mat drawLine(Mat* tar,int startx,int endx){
-		uchar* p;
-		for(int r=0;r<tar->rows;r++){
-			p = tar->ptr(r);
-			for(int c=0;c<tar->cols;c++){
-
-			}
-		}
-	}
-
-	/// \brief 根据x,计算y
-	/// \param x
-	/// \return y值
-	int getY(int x) {
-		int pa = this->factor.size();
-		int ret = 0,temp = 1;
-			for(int i=0;i<pa;i++){
-				int a = factor.at(i);
-				temp = a* temp * x;
-
-				ret = ret + temp;
-
-			}
-		return ret;
 	}
 };
 
